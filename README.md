@@ -1,17 +1,17 @@
-# PACKAGE-NAME
+# reveal-on-scroll
 
 [![NPM version][npm-image]][npm-url]
 [![Actions Status][ci-image]][ci-url]
 [![PR Welcome][npm-downloads-image]][npm-downloads-url]
 
-Package one-liner overview.
+Lightweight library to reveal elements on scroll.
 
 ## Introduction
 
 Package introduction, couple of paragraphs.
 
 ```javascript
-import useLibrary from "@phntms/PACKAGE-NAME";
+import useLibrary from "@phntms/reveal-on-scroll";
 
 const { something } = useLibrary({
   argument1: "something",
@@ -24,7 +24,7 @@ const { something } = useLibrary({
 Install this package with `npm`.
 
 ```bash
-npm i @phntms/PACKAGE-NAME
+npm i @phntms/reveal-on-scroll
 ```
 
 ## Usage
@@ -33,7 +33,7 @@ Example 1 description.
 
 ```JSX
 import React from 'react';
-import useLibrary from '@phntms/PACKAGE-NAME';
+import useLibrary from '@phntms/reveal-on-scroll';
 
 const SomeExample = () = {
   const { something } = useApi({
@@ -54,7 +54,7 @@ Example 2 description.
 
 ```JSX
 import React from 'react';
-import useLibrary from '@phntms/PACKAGE-NAME';
+import useLibrary from '@phntms/reveal-on-scroll';
 
 const SomeExample2 = () = {
   const { something } = useApi({
@@ -82,9 +82,9 @@ const SomeExample2 = () = {
 
 - `something`: Description of output.
 
-[npm-image]: https://img.shields.io/npm/v/@phntms/PACKAGE-NAME.svg?style=flat-square&logo=react
-[npm-url]: https://npmjs.org/package/@phntms/PACKAGE-NAME
-[npm-downloads-image]: https://img.shields.io/npm/dm/@phntms/PACKAGE-NAME.svg
-[npm-downloads-url]: https://npmcharts.com/compare/@phntms/PACKAGE-NAME?minimal=true
-[ci-image]: https://github.com/phantomstudios/PACKAGE-NAME/workflows/Test/badge.svg
-[ci-url]: https://github.com/phantomstudios/PACKAGE-NAME/actions
+[npm-image]: https://img.shields.io/npm/v/@phntms/reveal-on-scroll.svg?style=flat-square&logo=react
+[npm-url]: https://npmjs.org/package/@phntms/reveal-on-scroll
+[npm-downloads-image]: https://img.shields.io/npm/dm/@phntms/reveal-on-scroll.svg
+[npm-downloads-url]: https://npmcharts.com/compare/@phntms/reveal-on-scroll?minimal=true
+[ci-image]: https://github.com/phantomstudios/reveal-on-scroll/workflows/Test/badge.svg
+[ci-url]: https://github.com/phantomstudios/reveal-on-scroll/actions

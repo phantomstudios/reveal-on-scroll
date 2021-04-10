@@ -7,32 +7,24 @@ about: "Is something not working as you expect?"
 
 > Clearly describe the bug
 
-e.g. "Data refuses to load when accessing via https..."
+e.g. "Element isn't animating on scroll..."
 
-> Which version of PACKAGE-NAME are you using?
+> Which version of reveal-on-scroll are you using?
 
 e.g. `0.1.0`
 
-> What version of React are you using PACKAGE-NAME within?
-
-e.g. `16.9.0`
-
-> What build/platform are you using?
-
-e.g. "Gatsby"
-
 > What did you expect to happen?
 
-e.g. "Data to load."
+e.g. "Element to animate."
 
 > What actually happened (e.g. what warnings or errors did you get)?
 
-e.g. "The request just hung, no response."
+e.g. "Element didn't animate, and stayed hidden."
 
 <!--
 Before posting, please check that the bug hasn't already been:
-1. fixed in the next release (https://github.com/phantomstudios/PACKAGE-NAME/blob/master/CHANGELOG.md)
-2. discussed previously (https://github.com/phantomstudios/PACKAGE-NAME/search)
+1. fixed in the next release (https://github.com/phantomstudios/reveal-on-scroll/blob/master/CHANGELOG.md)
+2. discussed previously (https://github.com/phantomstudios/reveal-on-scroll/search)
 -->
 
 <!--
