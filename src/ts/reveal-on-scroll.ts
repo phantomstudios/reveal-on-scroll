@@ -3,11 +3,11 @@ import { IS_IE } from "./utils/platform";
 const ON_SCROLL_CLASS = "reveal-on-scroll";
 const VISIBLE_CLASS = "reveal-scrolled";
 const HIDDEN_CLASS = "reveal-hidden";
-const DELAY_TO_SHOW = 200;
+const DELAY_BETWEEN_QUEUED_ELEMENTS = 150;
 
 export class RevealOnScroll {
-  private elements: Element[] = [];
-  private readonly queueToShow: Element[] = [];
+  private elements: HTMLElement[] = [];
+  private readonly queueToShow: HTMLElement[] = [];
   private showNext = true;
 
   constructor() {
@@ -26,7 +26,9 @@ export class RevealOnScroll {
 
   private getAllElements() {
     // Convert NodeList to element array
-    return Array.from(document.querySelectorAll(`.${ON_SCROLL_CLASS}`));
+    return Array.from(
+      document.querySelectorAll<HTMLElement>(`.${ON_SCROLL_CLASS}`)
+    );
   }
 
   private createListeners() {
@@ -65,7 +67,7 @@ export class RevealOnScroll {
       // Get element to show
       const element = this.queueToShow[0];
 
-      // Wait DELAY_TO_SHOW (in ms) before showing element
+      // Wait DELAY_BETWEEN_QUEUED_ELEMENTS (in ms) before showing element
       setTimeout(() => {
         // If item hasn't already been shown...
         if (!this.visible(element)) {
@@ -80,7 +82,7 @@ export class RevealOnScroll {
         // Show next element
         this.showNext = true;
         this.showQueued();
-      }, DELAY_TO_SHOW);
+      }, DELAY_BETWEEN_QUEUED_ELEMENTS);
     }
 
     // If no elements left to be scrolled, remove listeners
