@@ -52,11 +52,12 @@ export class RevealOnScroll {
             // Find if element is already in queue
             const queued = this.queueToShow.includes(element);
 
-            // Find if element is hidden
+            // Find if element is already visible/hidden
+            const visible = element.classList.contains(VISIBLE_CLASS);
             const hidden = element.classList.contains(HIDDEN_CLASS);
 
             // If element is already in queue to show, visible or hidden, ignore
-            if (queued || this.visible(element) || hidden) return;
+            if (queued || visible || hidden) return;
             else {
               // todo: tweak threshold
               // const elementHeight = element.getBoundingClientRect().height;
@@ -95,7 +96,7 @@ export class RevealOnScroll {
       // Wait DELAY_BETWEEN_QUEUED_ELEMENTS (in ms) before showing element
       setTimeout(() => {
         // If item hasn't already been shown...
-        if (!this.visible(element)) {
+        if (!element.classList.contains(VISIBLE_CLASS)) {
           // Replace element listener class with visible class to trigger show
           element.classList.remove(ON_SCROLL_CLASS);
           element.classList.add(VISIBLE_CLASS);
@@ -109,9 +110,5 @@ export class RevealOnScroll {
         this.showQueued();
       }, DELAY_BETWEEN_QUEUED_ELEMENTS);
     }
-  }
-
-  private visible(element: Element) {
-    return element.classList.contains(VISIBLE_CLASS);
   }
 }
