@@ -26,11 +26,11 @@
     "test:watch": "jest --verbose --watch",
     "coverage": "jest --coverage",
     "lint": "NODE_ENV=test npm-run-all --parallel lint:*",
-    "lint:js": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
+    "lint:js": "eslint \"src/**/*.{js,ts}\"",
     "lint:format": "prettier \"**/*.{md,html,yaml,yml}\" --check",
     "lint:type-check": "tsc --noEmit",
     "fix": "npm-run-all --sequential fix:*",
-    "fix:js": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
+    "fix:js": "eslint \"src/**/*.{js,ts}\" --fix",
     "fix:format": "prettier \"**/*.{md,html,yaml,yml}\" --write",
     "depcheck": "npx npm-check --update"
   },

@@ -6,10 +6,6 @@
     "jest": true
   },
   "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "jsx": true,
-    "useJSXTextNode": true
-  },
   "plugins": ["prettier", "eslint-plugin-import"],
   "extends": [
     "plugin:@typescript-eslint/recommended",
@@ -23,12 +19,6 @@
       "error",
       {
         "groups": ["builtin", "external", "internal"],
-        "pathGroups": [
-          {
-            "group": "external",
-            "position": "before"
-          }
-        ],
         "newlines-between": "always",
         "alphabetize": {
           "order": "asc",
