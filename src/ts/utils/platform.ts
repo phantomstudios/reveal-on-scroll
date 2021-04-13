@@ -1,3 +1,3 @@
-export const IS_IE =
-  "-ms-scroll-limit" in document.documentElement.style &&
-  "-ms-ime-align" in document.documentElement.style;
+export const IN_BROWSER = window !== undefined;
+
+export const HAS_INTERSECTION_OBSERVER = !!window.IntersectionObserver;

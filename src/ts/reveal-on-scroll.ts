@@ -1,9 +1,10 @@
-import { IS_IE } from "./utils/platform";
+import { IN_BROWSER, HAS_INTERSECTION_OBSERVER } from "./utils/platform";
 
 const ON_SCROLL_CLASS = "reveal-on-scroll";
 const VISIBLE_CLASS = "reveal-scrolled";
 const HIDDEN_CLASS = "reveal-hidden";
 const DELAY_BETWEEN_QUEUED_ELEMENTS = 150;
+const THRESHOLD_TO_SHOW = 0.2;
 
 export class RevealOnScroll {
   private elements: HTMLElement[] = [];
@@ -11,17 +12,21 @@ export class RevealOnScroll {
   private showNext = true;
 
   constructor() {
-    // If Internet Explorer, ignore (Doesn't support intersectionObserver)...
-    if (IS_IE) return;
+    // If not in browser, ignore
+    if (!IN_BROWSER) return;
 
     // Get elements to reveal
     this.elements = this.getAllElements();
 
-    // Find visible elements on initial
-    this.handleVisibleElements();
+    // If intersectionObserver isn't supported (IE), force show all
+    if (!HAS_INTERSECTION_OBSERVER) this.showAll();
+    else {
+      // Create intersectionObserver
+      const observer = this.createIntersectionObserver();
 
-    // Listen for changes
-    this.createListeners();
+      // Add elements to observer
+      this.elements.forEach((element) => observer.observe(element));
+    }
   }
 
   private getAllElements() {
@@ -31,37 +36,53 @@ export class RevealOnScroll {
     );
   }
 
-  private createListeners() {
-    window.addEventListener("scroll", this.handleVisibleElements);
-    window.addEventListener("resize", this.handleVisibleElements);
-    window.addEventListener("orientationchange", this.handleVisibleElements);
+  private showAll() {
+    this.elements.forEach((element) => element.classList.add(VISIBLE_CLASS));
   }
 
-  private removeListeners() {
-    window.removeEventListener("scroll", this.handleVisibleElements);
-    window.removeEventListener("resize", this.handleVisibleElements);
-    window.removeEventListener("orientationchange", this.handleVisibleElements);
-  }
+  private createIntersectionObserver() {
+    return new IntersectionObserver((entries, observer) => {
+      entries.forEach(
+        (entry) => {
+          // If items moved into view, add to queue
+          if (entry.isIntersecting) {
+            // Get element
+            const element = entry.target as HTMLElement;
 
-  private readonly handleVisibleElements = () => {
-    this.elements.forEach((element) => {
-      const inQueue = this.queueToShow.find((item) => item === element);
+            // Find if element is already in queue
+            const queued = this.queueToShow.find((item) => item === element);
 
-      // If element is already in queue to show, visible or hidden, ignore
-      if (inQueue || this.visible(element) || this.hidden(element)) return;
+            // If element is already in queue to show, visible or hidden, ignore
+            if (queued || this.visible(element) || this.hidden(element)) return;
+            else {
+              // const elementHeight = element.getBoundingClientRect().height;
+              // const windowHeight = window.innerHeight;
+              // let threshold = THRESHOLD_TO_SHOW;
 
-      // If items moved into view, add to queue
-      if (this.hasElementMovedIntoView(element)) this.queueToShow.push(element);
+              // // If element is too tall to ever hit threshold...
+              // if (elementHeight > windowHeight * threshold) {
+              //   // Reduce threshold
+              //   threshold =
+              //     ((windowHeight * threshold) / elementHeight) * threshold;
+              // }
+
+              // Else, queue
+              this.queueToShow.push(element);
+
+              // Remove observer
+              observer.unobserve(entry.target);
+            }
+          }
+        },
+        { threshold: THRESHOLD_TO_SHOW }
+      );
     });
-
-    // If items in queue, show them
-    if (this.queueToShow.length > 0) this.showQueued();
-  };
+  }
 
   private showQueued() {
     // If can show next and there's items in queue...
     if (this.showNext && this.queueToShow.length !== 0) {
-      // Prevent another item from showing till this finishes stagger
+      // Prevent another item from showing till this finishes staggering
       this.showNext = false;
 
       // Get element to show
@@ -84,10 +105,6 @@ export class RevealOnScroll {
         this.showQueued();
       }, DELAY_BETWEEN_QUEUED_ELEMENTS);
     }
-
-    // If no elements left to be scrolled, remove listeners
-    const elementsLeft = this.getAllElements();
-    if (elementsLeft.length === 0) this.removeListeners();
   }
 
   private visible(element: Element) {
@@ -100,35 +117,5 @@ export class RevealOnScroll {
 
   private contains(element: Element, className: string) {
     return element.classList.contains(className);
-  }
-
-  private hasElementMovedIntoView(element: Element) {
-    const windowDistanceFromTop = window.scrollY;
-    const windowHeight = windowDistanceFromTop + window.innerHeight;
-
-    const elementRect = element.getBoundingClientRect();
-    let elementDistanceFromTop = windowDistanceFromTop + elementRect.top;
-    let elementHeight = elementDistanceFromTop + elementRect.height;
-
-    // When an element is visible (shows when 20% visible)
-    const threshold = (elementRect.height / 5) * 4;
-
-    /**
-     * Get scrolling direction, then update element distance from top / height
-     * based on given threshold.
-     */
-    if (windowDistanceFromTop - elementDistanceFromTop >= 0) {
-      // Scrolling top to bottom
-      elementDistanceFromTop += threshold;
-    } else {
-      // Scrolling bottom to top
-      elementHeight -= threshold;
-    }
-
-    // Return true if elements moved into view or false otherwise
-    return (
-      elementHeight <= windowHeight &&
-      elementDistanceFromTop >= windowDistanceFromTop
-    );
   }
 }

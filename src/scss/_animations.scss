@@ -7,7 +7,7 @@ $distance: 32px !default;
  * - fade-up-right, fade-down-right, fade-down-left, fade-up-left
  */
 
-[data-reveal^="fade"][data-reveal^="fade"] {
+[data-reveal^="fade"] {
   opacity: 0;
   transition-property: opacity, transform;
 
