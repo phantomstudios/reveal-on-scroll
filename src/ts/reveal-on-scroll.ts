@@ -50,7 +50,7 @@ export class RevealOnScroll {
             const element = entry.target as HTMLElement;
 
             // Find if element is already in queue
-            const queued = this.queueToShow.find((item) => item === element);
+            const queued = this.queueToShow.includes(element);
 
             // If element is already in queue to show, visible or hidden, ignore
             if (queued || this.visible(element) || this.hidden(element)) return;
@@ -81,7 +81,7 @@ export class RevealOnScroll {
 
   private showQueued() {
     // If can show next and there's items in queue...
-    if (this.showNext && this.queueToShow.length !== 0) {
+    if (this.showNext && this.queueToShow.length) {
       // Prevent another item from showing till this finishes staggering
       this.showNext = false;
 
@@ -97,7 +97,7 @@ export class RevealOnScroll {
           element.classList.add(VISIBLE_CLASS);
 
           // Remove item from queue
-          this.queueToShow.splice(0, 1);
+          this.queueToShow.shift();
         }
 
         // Show next element
