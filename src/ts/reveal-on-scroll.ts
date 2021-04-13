@@ -19,7 +19,7 @@ export class RevealOnScroll {
     this.elements = this.getAllElements();
 
     // If intersectionObserver isn't supported (IE), force show all
-    if (!HAS_INTERSECTION_OBSERVER) this.showAll();
+    if (!HAS_INTERSECTION_OBSERVER) this.showAllElements();
     else {
       // Create intersectionObserver
       const observer = this.createIntersectionObserver();
@@ -36,7 +36,7 @@ export class RevealOnScroll {
     );
   }
 
-  private showAll() {
+  private showAllElements() {
     this.elements.forEach((element) => element.classList.add(VISIBLE_CLASS));
   }
 
@@ -44,7 +44,7 @@ export class RevealOnScroll {
     return new IntersectionObserver((entries, observer) => {
       entries.forEach(
         (entry) => {
-          // If items moved into view, add to queue
+          // If items moved into view...
           if (entry.isIntersecting) {
             // Get element
             const element = entry.target as HTMLElement;
@@ -52,12 +52,13 @@ export class RevealOnScroll {
             // Find if element is already in queue
             const queued = this.queueToShow.includes(element);
 
-            // If element is hidden
+            // Find if element is hidden
             const hidden = element.classList.contains(HIDDEN_CLASS);
 
             // If element is already in queue to show, visible or hidden, ignore
             if (queued || this.visible(element) || hidden) return;
             else {
+              // todo: tweak threshold
               // const elementHeight = element.getBoundingClientRect().height;
               // const windowHeight = window.innerHeight;
               // let threshold = THRESHOLD_TO_SHOW;
