@@ -52,8 +52,11 @@ export class RevealOnScroll {
             // Find if element is already in queue
             const queued = this.queueToShow.includes(element);
 
+            // If element is hidden
+            const hidden = element.classList.contains(HIDDEN_CLASS);
+
             // If element is already in queue to show, visible or hidden, ignore
-            if (queued || this.visible(element) || this.hidden(element)) return;
+            if (queued || this.visible(element) || hidden) return;
             else {
               // const elementHeight = element.getBoundingClientRect().height;
               // const windowHeight = window.innerHeight;
@@ -108,14 +111,6 @@ export class RevealOnScroll {
   }
 
   private visible(element: Element) {
-    return this.contains(element, VISIBLE_CLASS);
-  }
-
-  private hidden(element: Element) {
-    return this.contains(element, HIDDEN_CLASS);
-  }
-
-  private contains(element: Element, className: string) {
-    return element.classList.contains(className);
+    return element.classList.contains(VISIBLE_CLASS);
   }
 }
