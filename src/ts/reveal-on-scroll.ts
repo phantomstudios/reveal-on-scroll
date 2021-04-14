@@ -5,11 +5,11 @@ const VISIBLE_CLASS = "reveal-scrolled";
 const HIDDEN_CLASS = "reveal-hidden";
 
 export class RevealOnScroll {
-  private _elements: HTMLElement[] = [];
-  private readonly _queueToShow: HTMLElement[] = [];
-  private _canRevealNext = true;
-  private _delayBetweenQueuedElements!: number;
-  private _thresholdToRevealElement!: number;
+  protected _elements: HTMLElement[] = [];
+  protected readonly _queueToShow: HTMLElement[] = [];
+  protected _canRevealNext = true;
+  protected _delayBetweenQueuedElements!: number;
+  protected _thresholdToRevealElement!: number;
 
   constructor(
     delayBetweenQueuedElements = 150,
@@ -30,18 +30,18 @@ export class RevealOnScroll {
     }
   }
 
-  private getAllElementsToReveal() {
+  protected getAllElementsToReveal() {
     // Convert NodeList to element array
     return Array.from(
       document.querySelectorAll<HTMLElement>(`.${ON_SCROLL_CLASS}`)
     );
   }
 
-  private revealAllElements() {
+  protected revealAllElements() {
     this._elements.forEach((element) => element.classList.add(VISIBLE_CLASS));
   }
 
-  private createIntersectionObserver() {
+  protected createIntersectionObserver() {
     return new IntersectionObserver((entries, observer) => {
       entries.forEach(
         (entry) => {
@@ -84,7 +84,7 @@ export class RevealOnScroll {
     });
   }
 
-  private revealQueued() {
+  protected revealQueued() {
     // If can reveal next and there's items in queue...
     if (this._canRevealNext && this._queueToShow.length) {
       // Prevent another item from revealing till this finishes staggering
