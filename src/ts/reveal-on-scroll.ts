@@ -111,7 +111,7 @@ export class RevealOnScroll {
   }
 
   protected revealElement(element: HTMLElement) {
-    const alreadyVisible = !element.classList.contains(VISIBLE_CLASS);
+    const alreadyVisible = element.classList.contains(VISIBLE_CLASS);
     if (!alreadyVisible) {
       // Trigger reveal
       element.classList.remove(ON_SCROLL_CLASS);
