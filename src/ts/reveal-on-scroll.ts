@@ -3,60 +3,59 @@ import { IN_BROWSER, HAS_INTERSECTION_OBSERVER } from "./utils/platform";
 const ON_SCROLL_CLASS = "reveal-on-scroll";
 const VISIBLE_CLASS = "reveal-scrolled";
 const HIDDEN_CLASS = "reveal-hidden";
-const DELAY_BETWEEN_QUEUED_ELEMENTS = 150;
-const THRESHOLD_TO_SHOW = 0.2;
 
 export class RevealOnScroll {
-  private elements: HTMLElement[] = [];
-  private readonly queueToShow: HTMLElement[] = [];
-  private showNext = true;
+  private _elements: HTMLElement[] = [];
+  private readonly _queueToShow: HTMLElement[] = [];
+  private _canRevealNext = true;
+  private _delayBetweenQueuedElements!: number;
+  private _thresholdToRevealElement!: number;
 
-  constructor() {
+  constructor(
+    delayBetweenQueuedElements = 150,
+    thresholdToRevealElement = 0.2
+  ) {
     // If not in browser, ignore
     if (!IN_BROWSER) return;
 
-    // Get elements to reveal
-    this.elements = this.getAllElements();
+    this._elements = this.getAllElementsToReveal();
+    this._delayBetweenQueuedElements = delayBetweenQueuedElements;
+    this._thresholdToRevealElement = thresholdToRevealElement;
 
     // If intersectionObserver isn't supported (IE), force show all
-    if (!HAS_INTERSECTION_OBSERVER) this.showAllElements();
+    if (!HAS_INTERSECTION_OBSERVER) this.revealAllElements();
     else {
-      // Create intersectionObserver
       const observer = this.createIntersectionObserver();
-
-      // Add elements to observer
-      this.elements.forEach((element) => observer.observe(element));
+      this._elements.forEach((element) => observer.observe(element));
     }
   }
 
-  private getAllElements() {
+  private getAllElementsToReveal() {
     // Convert NodeList to element array
     return Array.from(
       document.querySelectorAll<HTMLElement>(`.${ON_SCROLL_CLASS}`)
     );
   }
 
-  private showAllElements() {
-    this.elements.forEach((element) => element.classList.add(VISIBLE_CLASS));
+  private revealAllElements() {
+    this._elements.forEach((element) => element.classList.add(VISIBLE_CLASS));
   }
 
   private createIntersectionObserver() {
     return new IntersectionObserver((entries, observer) => {
       entries.forEach(
         (entry) => {
-          // If items moved into view...
           if (entry.isIntersecting) {
             // Get element
             const element = entry.target as HTMLElement;
 
             // Find if element is already in queue
-            const queued = this.queueToShow.includes(element);
+            const queued = this._queueToShow.includes(element);
 
             // Find if element is already visible/hidden
             const visible = element.classList.contains(VISIBLE_CLASS);
             const hidden = element.classList.contains(HIDDEN_CLASS);
 
-            // If element is already in queue to show, visible or hidden, ignore
             if (queued || visible || hidden) return;
             else {
               // todo: tweak threshold
@@ -71,44 +70,44 @@ export class RevealOnScroll {
               //     ((windowHeight * threshold) / elementHeight) * threshold;
               // }
 
-              // Else, queue
-              this.queueToShow.push(element);
+              // Add element to queue + reveal
+              this._queueToShow.push(element);
+              this.revealQueued();
 
               // Remove observer
               observer.unobserve(entry.target);
             }
           }
         },
-        { threshold: THRESHOLD_TO_SHOW }
+        { threshold: this._thresholdToRevealElement }
       );
     });
   }
 
-  private showQueued() {
-    // If can show next and there's items in queue...
-    if (this.showNext && this.queueToShow.length) {
-      // Prevent another item from showing till this finishes staggering
-      this.showNext = false;
+  private revealQueued() {
+    // If can reveal next and there's items in queue...
+    if (this._canRevealNext && this._queueToShow.length) {
+      // Prevent another item from revealing till this finishes staggering
+      this._canRevealNext = false;
 
       // Get element to show
-      const element = this.queueToShow[0];
+      const element = this._queueToShow[0];
 
-      // Wait DELAY_BETWEEN_QUEUED_ELEMENTS (in ms) before showing element
       setTimeout(() => {
         // If item hasn't already been shown...
         if (!element.classList.contains(VISIBLE_CLASS)) {
-          // Replace element listener class with visible class to trigger show
+          // Trigger reveal
           element.classList.remove(ON_SCROLL_CLASS);
           element.classList.add(VISIBLE_CLASS);
 
           // Remove item from queue
-          this.queueToShow.shift();
+          this._queueToShow.shift();
         }
 
         // Show next element
-        this.showNext = true;
-        this.showQueued();
-      }, DELAY_BETWEEN_QUEUED_ELEMENTS);
+        this._canRevealNext = true;
+        this.revealQueued();
+      }, this._delayBetweenQueuedElements);
     }
   }
 }
