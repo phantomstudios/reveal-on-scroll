@@ -44,42 +44,43 @@ export class RevealOnScroll {
 
   protected createIntersectionObserver() {
     return new IntersectionObserver((entries, observer) => {
-      entries.forEach(
-        (entry) => {
-          if (entry.isIntersecting) {
-            // Get element
-            const element = entry.target as HTMLElement;
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Get element
+          const element = entry.target as HTMLElement;
 
-            const queued = this._queueToShow.includes(element);
-            const alreadyVisible = element.classList.contains(VISIBLE_CLASS);
-            const hidden = element.classList.contains(HIDDEN_CLASS);
+          const queued = this._queueToShow.includes(element);
+          const alreadyVisible = element.classList.contains(VISIBLE_CLASS);
+          const hidden = element.classList.contains(HIDDEN_CLASS);
 
-            if (queued || alreadyVisible || hidden) return;
-            else {
-              // todo: tweak threshold
-              // const elementHeight = element.getBoundingClientRect().height;
-              // const windowHeight = window.innerHeight;
-              // let threshold = THRESHOLD_TO_SHOW;
+          if (queued || alreadyVisible || hidden) return;
+          else {
+            if (!this.isElementPastRevealThreshold(element)) return;
 
-              // // If element is too tall to ever hit threshold...
-              // if (elementHeight > windowHeight * threshold) {
-              //   // Reduce threshold
-              //   threshold =
-              //     ((windowHeight * threshold) / elementHeight) * threshold;
-              // }
+            // Add element to queue + reveal
+            this._queueToShow.push(element);
+            this.revealQueued();
 
-              // Add element to queue + reveal
-              this._queueToShow.push(element);
-              this.revealQueued();
-
-              // Remove observer
-              observer.unobserve(entry.target);
-            }
+            // Remove observer
+            observer.unobserve(entry.target);
           }
-        },
-        { threshold: this._thresholdToRevealElement }
-      );
+        }
+      });
     });
+  }
+
+  protected isElementPastRevealThreshold(element: HTMLElement) {
+    const elementRect = element.getBoundingClientRect();
+    const viewHeight = Math.max(
+      document.documentElement.clientHeight,
+      window.innerHeight
+    );
+    const threshold = elementRect.height * this._thresholdToRevealElement;
+
+    const above = elementRect.bottom - threshold < 0;
+    const below = elementRect.top - viewHeight + threshold >= 0;
+
+    return !above && !below;
   }
 
   protected revealQueued() {
