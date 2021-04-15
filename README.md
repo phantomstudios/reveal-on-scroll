@@ -4,20 +4,9 @@
 [![Actions Status][ci-image]][ci-url]
 [![PR Welcome][npm-downloads-image]][npm-downloads-url]
 
-Lightweight library to reveal elements on scroll.
+Lightweight library to reveal elements on scroll as you scroll down or up.
 
-## Introduction
-
-Package introduction, couple of paragraphs.
-
-```javascript
-import useLibrary from "@phntms/reveal-on-scroll";
-
-const { something } = useLibrary({
-  argument1: "something",
-  argument2: "something else",
-});
-```
+Currently only TS implementation, with full optional CSS animations planned in a future release.
 
 ## Installation
 
@@ -29,60 +18,74 @@ npm i @phntms/reveal-on-scroll
 
 ## Usage
 
-Example 1 description.
+To use, initialize a new `RevealOnScroll()` component.
 
-```JSX
-import React from 'react';
-import useLibrary from '@phntms/reveal-on-scroll';
+```ts
+new RevealOnScroll();
 
-const SomeExample = () = {
-  const { something } = useApi({
-    argument1: "something",
-    argument2: "something else",
-  });
+// Or...
 
-  return (
-    <>
-      <h1>Result</h2>
-      <p>{something}</p>
-    </>
-  );
+new RevealOnScroll({
+  // If multiple elements are visible at same time, this defines the delay before showing next element. Set to 0 to remove default stagger
+  delayBetweenQueuedElements: 150,
+
+  // Threshold of element that has to be in view, before revealing element
+  thresholdToRevealElements: 0.2,
+});
+```
+
+Then to use, simply add the `reveal-on-scroll` class to any `HTMLElement`. For example:
+
+```html
+<div class="reveal-on-scroll"></div>
+```
+
+The library works by swapping out any visible `reveal-on-scroll` with `reveal-scrolled`.
+
+To animate, simply hook into this with any custom CSS, for example:
+
+```scss
+$ease-out: cubic-bezier(0.3, 1, 0.7, 1);
+
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(32px);
+}
+
+.reveal-scrolled {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s $ease-out, transform 0.6s $ease-out;
 }
 ```
 
-Example 2 description.
+This library also supports `reveal-hidden` to prevent elements being revealed till ready, for example the following will be ignored till `reveal-hidden` is removed.
 
-```JSX
-import React from 'react';
-import useLibrary from '@phntms/reveal-on-scroll';
-
-const SomeExample2 = () = {
-  const { something } = useApi({
-    argument1: "something",
-    argument2: "something else",
-  });
-
-  return (
-    <>
-      <h1>Result</h2>
-      <p>{something}</p>
-    </>
-  );
-}
+```html
+<div class="reveal-on-scroll reveal-hidden"></div>
 ```
 
-## API
+### Browser Support
 
-### Input
+This library utilizes `intersectionObserver`, as such browser support is pretty good, for more information check [caniuse](https://caniuse.com/intersectionobserver).
 
-- `argument1` : Required - Description of argument.
-- `argument2` : Optional - Description of argument.
+For fallback, all instances of `reveal-on-scroll` are automatically replaced with `reveal-scrolled` to ensure older browsers still reveal content.
 
-### Output
+If you need `reveal-on-scroll` to work on any browser that doesn't support `intersectionObserver` consider using a polyfill such as this - [intersection-observer](https://www.npmjs.com/package/intersection-observer).
 
-- `something`: Description of output.
+### Planned
 
-[npm-image]: https://img.shields.io/npm/v/@phntms/reveal-on-scroll.svg?style=flat-square&logo=react
+Features planned in future releases:
+
+- Optional reset to hide any revealed elements below current window height. For example, if you reveal an element, but then scroll up, automatically hide that element if you scroll up past its reveal threshold.
+- Optional CSS animation library that can be imported and used alongside TS implementation.
+
+## 🍰 Contributing
+
+Please contribute using GitHub Flow. Create a branch, add commits, and open a Pull Request.
+
+Please read `CONTRIBUTING` for details on our `CODE_OF_CONDUCT`, and the process for submitting pull requests to us!
+
 [npm-url]: https://npmjs.org/package/@phntms/reveal-on-scroll
 [npm-downloads-image]: https://img.shields.io/npm/dm/@phntms/reveal-on-scroll.svg
 [npm-downloads-url]: https://npmcharts.com/compare/@phntms/reveal-on-scroll?minimal=true

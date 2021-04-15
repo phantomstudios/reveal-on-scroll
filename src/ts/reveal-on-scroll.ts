@@ -1,20 +1,26 @@
 import { IN_BROWSER, HAS_INTERSECTION_OBSERVER } from "./utils/platform";
 
-const ON_SCROLL_CLASS = "reveal-on-scroll";
-const VISIBLE_CLASS = "reveal-scrolled";
-const HIDDEN_CLASS = "reveal-hidden";
+export const ON_SCROLL_CLASS = "reveal-on-scroll";
+export const VISIBLE_CLASS = "reveal-scrolled";
+export const HIDDEN_CLASS = "reveal-hidden";
+
+interface Config {
+  delayBetweenQueuedElements: number;
+  thresholdToRevealElements: number;
+}
+
+const DEFAULT_CONFIG: Config = {
+  delayBetweenQueuedElements: 150,
+  thresholdToRevealElements: 0.2,
+};
 
 export class RevealOnScroll {
   protected _elements: HTMLElement[] = [];
   protected readonly _queueToShow: HTMLElement[] = [];
   protected _canRevealNext = true;
-  protected _delayBetweenQueuedElements!: number;
-  protected _thresholdToRevealElement!: number;
+  protected _config = DEFAULT_CONFIG;
 
-  constructor(
-    delayBetweenQueuedElements = 150,
-    thresholdToRevealElement = 0.2
-  ) {
+  constructor(config: Config) {
     // If not in browser (SSR), ignore
     if (!IN_BROWSER) return;
 
@@ -23,9 +29,7 @@ export class RevealOnScroll {
     // If intersectionObserver isn't supported (IE), force show all
     if (!HAS_INTERSECTION_OBSERVER) this.revealAllElements();
     else {
-      this._delayBetweenQueuedElements = delayBetweenQueuedElements;
-      this._thresholdToRevealElement = thresholdToRevealElement;
-
+      this._config = Object.assign(config, DEFAULT_CONFIG);
       const observer = this.createIntersectionObserver();
       this._elements.forEach((element) => observer.observe(element));
     }
@@ -75,7 +79,8 @@ export class RevealOnScroll {
       document.documentElement.clientHeight,
       window.innerHeight
     );
-    const threshold = elementRect.height * this._thresholdToRevealElement;
+    const threshold =
+      elementRect.height * this._config.thresholdToRevealElements;
 
     const above = elementRect.bottom - threshold < 0;
     const below = elementRect.top - viewHeight + threshold >= 0;
@@ -97,7 +102,7 @@ export class RevealOnScroll {
       else {
         setTimeout(() => {
           this.revealElement(element);
-        }, this._delayBetweenQueuedElements);
+        }, this._config.delayBetweenQueuedElements);
       }
     }
   }
