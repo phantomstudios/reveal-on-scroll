@@ -26,7 +26,12 @@ new RevealOnScroll();
 // Or...
 
 new RevealOnScroll({
-  // If multiple elements are visible at same time, this defines the delay before showing next element. Set to 0 to remove default stagger
+  /**
+   * If multiple elements are visible at same time, this defines the delay
+   * before showing next element.
+   *
+   * Set to 0 to remove default stagger.
+   */
   delayBetweenQueuedElements: 150,
 
   // Threshold of element that has to be in view, before revealing element
