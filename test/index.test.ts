@@ -1,5 +1,22 @@
-describe("performs requests", () => {
-  it("should work with 1 argument", async () => {});
+import { ON_SCROLL_CLASS } from "../src/ts/reveal-on-scroll";
 
-  it("should work with 2 arguments", async () => {});
+const getRevealElements = () =>
+  document.querySelectorAll<HTMLElement>(`.${ON_SCROLL_CLASS}`);
+
+describe("revealOnScroll()", function () {
+  it('Each element in reveal array should have "classList" attribute', async () => {
+    const elements = getRevealElements();
+
+    elements.forEach((element) =>
+      expect(element.hasOwnProperty("classList")).toBe(true)
+    );
+  });
+
+  it('Each element in reveal array should have "getBoundingClientRect" attribute', async () => {
+    const elements = getRevealElements();
+
+    elements.forEach((element) =>
+      expect(element.hasOwnProperty("getBoundingClientRect")).toBe(true)
+    );
+  });
 });
