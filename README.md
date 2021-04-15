@@ -45,6 +45,14 @@ Then to use, simply add the `reveal-on-scroll` class to any `HTMLElement`. For e
 <div class="reveal-on-scroll"></div>
 ```
 
+Additionally use `reveal-hidden` to prevent elements being revealed till ready, for example the following will be ignored till the class is removed:
+
+```html
+<div class="reveal-on-scroll reveal-hidden"></div>
+```
+
+## 🍪 Recipes:
+
 The library works by swapping out any visible `reveal-on-scroll` with `reveal-scrolled`.
 
 To animate, simply hook into this with any custom CSS, for example:
@@ -62,12 +70,6 @@ $ease-out: cubic-bezier(0.3, 1, 0.7, 1);
   transform: translateY(0);
   transition: opacity 0.8s $ease-out, transform 0.6s $ease-out;
 }
-```
-
-This library also supports `reveal-hidden` to prevent elements being revealed till ready, for example the following will be ignored till `reveal-hidden` is removed.
-
-```html
-<div class="reveal-on-scroll reveal-hidden"></div>
 ```
 
 ### Browser Support
