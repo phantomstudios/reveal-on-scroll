@@ -8,6 +8,8 @@ Lightweight library to reveal elements on scroll as you scroll down or up.
 
 Currently only TS implementation, with full optional CSS animations planned in a future release.
 
+Also SSR safe and won't break build if pre-rendered.
+
 ## Installation
 
 Install this package with `npm`.
@@ -45,7 +47,7 @@ Then to use, simply add the `reveal-on-scroll` class to any `HTMLElement`. For e
 <div class="reveal-on-scroll"></div>
 ```
 
-Additionally use `reveal-hidden` to prevent elements being revealed till ready, for example the following will be ignored till the class is removed:
+Additionally use `reveal-hidden` to prevent elements being revealed till ready, for example the following won't be revealed unless `reveal-hidden` is removed:
 
 ```html
 <div class="reveal-on-scroll reveal-hidden"></div>
@@ -74,11 +76,9 @@ $ease-out: cubic-bezier(0.3, 1, 0.7, 1);
 
 ### Browser Support
 
-This library utilizes `intersectionObserver`, as such browser support is pretty good, for more information check [caniuse](https://caniuse.com/intersectionobserver).
+This library utilizes `intersectionObserver`, as such browser support is pretty good, for more information check [caniuse](https://caniuse.com/intersectionobserver). For fallback, all instances of `reveal-on-scroll` are automatically replaced with `reveal-scrolled` to ensure older browsers still reveal content.
 
-For fallback, all instances of `reveal-on-scroll` are automatically replaced with `reveal-scrolled` to ensure older browsers still reveal content.
-
-If you need `reveal-on-scroll` to work on any browser that doesn't support `intersectionObserver` consider using a polyfill such as this - [intersection-observer](https://www.npmjs.com/package/intersection-observer).
+If you need `reveal-on-scroll` to work on any browser that doesn't support `intersectionObserver` consider using a polyfill such as - [intersection-observer](https://www.npmjs.com/package/intersection-observer).
 
 ### Planned
 
