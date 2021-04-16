@@ -6,7 +6,7 @@
 
 Lightweight library to reveal elements on scroll as you scroll down or up.
 
-Currently only TS implementation, with full optional CSS animations planned in a future release.
+Can be used standalone as pure TS implementation, or alongside it's full optional CSS animation library (Coming Soon as seen below!).
 
 Also SSR safe and won't break build if pre-rendered.
 
