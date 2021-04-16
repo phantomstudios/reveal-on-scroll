@@ -7,7 +7,7 @@ about: "Is something wrong, confusing or missing in the docs?"
 
 > Clearly describe the documentation issue
 
-e.g. "The description of the `refresh` function needs expanding..."
+e.g. "The description of the `x` function needs expanding..."
 
 > What solution would you like to see?
 
