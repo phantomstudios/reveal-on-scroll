@@ -7,13 +7,13 @@ import {
   VISIBLE_CLASS,
 } from "./utils/types";
 
-export class RevealOnScroll {
+class RevealOnScroll {
   protected _elements: HTMLElement[] = [];
   protected readonly _queueToShow: HTMLElement[] = [];
   protected _canRevealNext = true;
   protected _config = DEFAULT_CONFIG;
 
-  constructor(config: Config) {
+  constructor(config?: Config) {
     // If not in browser (SSR), ignore
     if (!IN_BROWSER) return;
 
@@ -116,3 +116,4 @@ export class RevealOnScroll {
     this.revealQueued();
   }
 }
+export default RevealOnScroll;
