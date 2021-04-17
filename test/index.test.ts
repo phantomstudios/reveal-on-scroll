@@ -1,7 +1,4 @@
-import { ON_SCROLL_CLASS } from "../src/ts/reveal-on-scroll";
-
-const getAllElementsToReveal = () =>
-  document.querySelectorAll<HTMLElement>(`.${ON_SCROLL_CLASS}`);
+import { getAllElementsToReveal } from "../src/ts/utils/helpers";
 
 describe("revealOnScroll()", function () {
   it('Each element in reveal array should have "classList" attribute', async () => {

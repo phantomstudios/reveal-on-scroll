@@ -1,18 +1,11 @@
+import { getAllElementsToReveal } from "./utils/helpers";
 import { IN_BROWSER, HAS_INTERSECTION_OBSERVER } from "./utils/platform";
-
-export const ON_SCROLL_CLASS = "reveal-on-scroll";
-export const VISIBLE_CLASS = "reveal-scrolled";
-export const HIDDEN_CLASS = "reveal-hidden";
-
-interface Config {
-  delayBetweenQueuedElements: number;
-  thresholdToRevealElements: number;
-}
-
-const DEFAULT_CONFIG: Config = {
-  delayBetweenQueuedElements: 150,
-  thresholdToRevealElements: 0.2,
-};
+import {
+  Config,
+  DEFAULT_CONFIG,
+  HIDDEN_CLASS,
+  VISIBLE_CLASS,
+} from "./utils/types";
 
 export class RevealOnScroll {
   protected _elements: HTMLElement[] = [];
@@ -24,7 +17,7 @@ export class RevealOnScroll {
     // If not in browser (SSR), ignore
     if (!IN_BROWSER) return;
 
-    this._elements = this.getAllElementsToReveal();
+    this._elements = getAllElementsToReveal();
 
     // If intersectionObserver isn't supported (IE), force show all
     if (!HAS_INTERSECTION_OBSERVER) this.revealAllElements();
@@ -33,13 +26,6 @@ export class RevealOnScroll {
       const observer = this.createIntersectionObserver();
       this._elements.forEach((element) => observer.observe(element));
     }
-  }
-
-  protected getAllElementsToReveal() {
-    // Convert NodeList to element array
-    return Array.from(
-      document.querySelectorAll<HTMLElement>(`.${ON_SCROLL_CLASS}`)
-    );
   }
 
   protected revealAllElements() {
@@ -119,8 +105,6 @@ export class RevealOnScroll {
   protected revealElement(element: HTMLElement) {
     const alreadyVisible = element.classList.contains(VISIBLE_CLASS);
     if (!alreadyVisible) {
-      // Trigger reveal
-      element.classList.remove(ON_SCROLL_CLASS);
       element.classList.add(VISIBLE_CLASS);
 
       // Remove item from queue
