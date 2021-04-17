@@ -47,7 +47,7 @@ Then to use, simply add the `reveal-on-scroll` class to any `HTMLElement`. For e
 <div class="reveal-on-scroll"></div>
 ```
 
-Additionally use `reveal-hidden` to prevent elements being revealed till ready, for example the following won't be revealed unless `reveal-hidden` is removed:
+Additionally use `reveal-hidden` to prevent elements being revealed till ready, for example the following won't be revealed until `reveal-hidden` is removed:
 
 ```html
 <div class="reveal-on-scroll reveal-hidden"></div>
@@ -55,7 +55,7 @@ Additionally use `reveal-hidden` to prevent elements being revealed till ready, 
 
 ## 🍪 Recipes:
 
-The library works by swapping out any visible `reveal-on-scroll` with `reveal-scrolled`.
+The library works by adding `reveal-scrolled` to any `reveal-on-scroll` elements.
 
 To animate, simply hook into this with any custom CSS, for example:
 
@@ -65,18 +65,18 @@ $ease-out: cubic-bezier(0.3, 1, 0.7, 1);
 .reveal-on-scroll {
   opacity: 0;
   transform: translateY(32px);
-}
-
-.reveal-scrolled {
-  opacity: 1;
-  transform: translateY(0);
   transition: opacity 0.8s $ease-out, transform 0.6s $ease-out;
+
+  &.reveal-scrolled {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 ```
 
 ### Browser Support
 
-This library utilizes `intersectionObserver`, as such browser support is pretty good, for more information check [caniuse](https://caniuse.com/intersectionobserver). For fallback, all instances of `reveal-on-scroll` are automatically replaced with `reveal-scrolled` to ensure older browsers still reveal content.
+This library utilizes `intersectionObserver`, as such browser support is pretty good (par IE11 and below), for more information check [caniuse](https://caniuse.com/intersectionobserver). For fallback, `reveal-scrolled` is automatically added to all `reveal-on-scroll` elements to ensure older browsers still reveal content.
 
 If you need `reveal-on-scroll` to work on any browser that doesn't support `intersectionObserver` consider using a polyfill such as - [intersection-observer](https://www.npmjs.com/package/intersection-observer).
 
@@ -89,7 +89,7 @@ Features planned in future releases:
 
 ## 🍰 Contributing
 
-Please contribute using GitHub Flow. Create a branch, add commits, and open a Pull Request.
+Want to get involved, or found an issue? Please contribute using the GitHub Flow. Create a branch, add commits, and open a Pull Request or submit a new issue.
 
 Please read `CONTRIBUTING` for details on our `CODE_OF_CONDUCT`, and the process for submitting pull requests to us!
 
