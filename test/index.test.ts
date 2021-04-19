@@ -1,22 +1,32 @@
-import { ON_SCROLL_CLASS } from "../src/ts/reveal-on-scroll";
+import fs from "fs";
+import path from "path";
 
-const getAllElementsToReveal = () =>
-  document.querySelectorAll<HTMLElement>(`.${ON_SCROLL_CLASS}`);
+import RevealOnScroll from "../src/ts/reveal-on-scroll";
+import { getAllElementsToReveal } from "../src/ts/utils/helpers";
+
+const FIXTURE_PATH = "./index.fixture.html";
+const html = fs.readFileSync(path.resolve(__dirname, FIXTURE_PATH), "utf8");
+jest.dontMock("fs");
 
 describe("revealOnScroll()", function () {
-  it('Each element in reveal array should have "classList" attribute', async () => {
-    const elements = getAllElementsToReveal();
+  // Create fixture
+  beforeEach(() => (document.documentElement.innerHTML = html.toString()));
+  afterEach(() => jest.resetModules());
 
+  it('Each element in reveal array should have "classList" property', async () => {
+    const elements = getAllElementsToReveal();
+    elements.forEach((element) => expect(element.classList).toBeDefined());
+  });
+
+  it('Each element in reveal array should have "getBoundingClientRect" property', async () => {
+    const elements = getAllElementsToReveal();
     elements.forEach((element) =>
-      expect(element.hasOwnProperty("classList")).toBe(true)
+      expect(element.getBoundingClientRect).toBeDefined()
     );
   });
 
-  it('Each element in reveal array should have "getBoundingClientRect" attribute', async () => {
-    const elements = getAllElementsToReveal();
-
-    elements.forEach((element) =>
-      expect(element.hasOwnProperty("getBoundingClientRect")).toBe(true)
-    );
+  it("Should be defined", function () {
+    const revealOnScroll = new RevealOnScroll();
+    expect(revealOnScroll).toBeDefined();
   });
 });
