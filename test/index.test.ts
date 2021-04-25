@@ -8,7 +8,7 @@ const FIXTURE_PATH = "./index.fixture.html";
 const html = fs.readFileSync(path.resolve(__dirname, FIXTURE_PATH), "utf8");
 jest.dontMock("fs");
 
-describe("revealOnScroll()", function () {
+describe("RevealOnScroll()", function () {
   // Create fixture
   beforeEach(() => (document.documentElement.innerHTML = html.toString()));
   afterEach(() => jest.resetModules());
@@ -25,8 +25,21 @@ describe("revealOnScroll()", function () {
     );
   });
 
-  it("Should be defined", function () {
+  it("Should be able to define new RevealOnScroll()", async () => {
     const revealOnScroll = new RevealOnScroll();
     expect(revealOnScroll).toBeDefined();
   });
+
+  it("Should reveal all elements if `intersectionObserver` isn't available", async () => {
+    const elements = getAllElementsToReveal();
+    elements.forEach((element) => {
+      expect(element.classList.contains(VISIBLE_CLASS)).toBe(true);
+    });
+  });
+
+  it("Should only reveal elements if within viewport and not reveal-hidden", async () => {});
+
+  it("Should reveal elements if within viewport after reveal-hidden is removed", async () => {});
+
+  it("Should only reveal element if past threshold", async () => {});
 });
