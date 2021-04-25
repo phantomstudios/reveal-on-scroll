@@ -26,6 +26,10 @@ describe("RevealOnScroll()", function () {
     expect(revealOnScroll.elements).toBeDefined();
   });
 
+  it("Should have refresh() method", async () => {
+    expect(revealOnScroll.refresh).toBeDefined();
+  });
+
   it('Each element in reveal array should have "classList" property', async () => {
     revealOnScroll.elements.forEach((element) =>
       expect(element.classList).toBeDefined()

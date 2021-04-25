@@ -11,6 +11,7 @@ class RevealOnScroll {
   config!: Config;
   readonly elements: Element[] = [];
   readonly _queueToShow: Element[] = [];
+  private _intersectionObserver!: IntersectionObserver;
   private _canRevealNext = true;
 
   constructor(config?: Config) {
@@ -23,8 +24,8 @@ class RevealOnScroll {
     if (!HAS_INTERSECTION_OBSERVER) this.revealAllElements();
     else {
       this.config = Object.assign(config, DEFAULT_CONFIG);
-      const observer = this._createIntersectionObserver();
-      this.elements.forEach((element) => observer.observe(element));
+      this._intersectionObserver = this._createIntersectionObserver();
+      this._observeElements(this.elements);
     }
   }
 
@@ -61,6 +62,10 @@ class RevealOnScroll {
         }
       });
     });
+  }
+
+  private _observeElements(elements: Element[]) {
+    elements.forEach((element) => this._intersectionObserver.observe(element));
   }
 
   isElementPastRevealThreshold(element: Element) {
@@ -117,6 +122,13 @@ class RevealOnScroll {
   private _revealNextElement() {
     this._canRevealNext = true;
     this._revealQueued();
+  }
+
+  refresh() {
+    const allElements = this.getAllElementsToReveal();
+    const newElements = this.elements.filter((x) => !allElements.includes(x));
+    this._observeElements(newElements);
+    this.elements.concat(newElements);
   }
 }
 
