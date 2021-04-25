@@ -116,4 +116,5 @@ class RevealOnScroll {
     this.revealQueued();
   }
 }
+
 export default RevealOnScroll;
