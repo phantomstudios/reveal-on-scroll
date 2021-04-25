@@ -8,8 +8,8 @@ import {
 } from "./utils/types";
 
 class RevealOnScroll {
-  protected _elements: HTMLElement[] = [];
-  protected readonly _queueToShow: HTMLElement[] = [];
+  protected _elements: Element[] = [];
+  protected readonly _queueToShow: Element[] = [];
   protected _canRevealNext = true;
   protected _config = DEFAULT_CONFIG;
 
@@ -37,7 +37,7 @@ class RevealOnScroll {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           // Get element
-          const element = entry.target as HTMLElement;
+          const element = entry.target as Element;
 
           const queued = this._queueToShow.includes(element);
           const alreadyVisible = element.classList.contains(VISIBLE_CLASS);
@@ -59,7 +59,7 @@ class RevealOnScroll {
     });
   }
 
-  protected isElementPastRevealThreshold(element: HTMLElement) {
+  protected isElementPastRevealThreshold(element: Element) {
     const elementRect = element.getBoundingClientRect();
     const viewHeight = Math.max(
       document.documentElement.clientHeight,
@@ -93,7 +93,7 @@ class RevealOnScroll {
     }
   }
 
-  protected isElementOnscreen(element: HTMLElement) {
+  protected isElementOnscreen(element: Element) {
     const elementRect = element.getBoundingClientRect();
     const viewHeight = Math.max(
       document.documentElement.clientHeight,
@@ -102,7 +102,7 @@ class RevealOnScroll {
     return !(elementRect.bottom < 0 || elementRect.top - viewHeight >= 0);
   }
 
-  protected revealElement(element: HTMLElement) {
+  protected revealElement(element: Element) {
     const alreadyVisible = element.classList.contains(VISIBLE_CLASS);
     if (!alreadyVisible) {
       element.classList.add(VISIBLE_CLASS);
