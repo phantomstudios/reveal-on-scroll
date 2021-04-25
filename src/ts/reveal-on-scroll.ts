@@ -90,7 +90,8 @@ class RevealOnScroll {
       this._canRevealNext = false;
 
       // Get oldest element from stack to reveal
-      const element = this._queueToShow.shift() as Element;
+      const element = this._queueToShow.shift();
+      if (!element) return;
 
       // If element is already offscreen, reveal (won't see stagger)
       if (!this.isElementOnscreen) {
