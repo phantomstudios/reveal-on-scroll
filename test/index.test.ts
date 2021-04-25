@@ -18,7 +18,7 @@ describe("RevealOnScroll()", function () {
 
   afterEach(() => jest.resetModules());
 
-  it("Should be able to define new RevealOnScroll()", async () => {
+  it("Should be defined", async () => {
     expect(revealOnScroll).toBeDefined();
   });
 
