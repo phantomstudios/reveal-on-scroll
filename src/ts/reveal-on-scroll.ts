@@ -8,31 +8,31 @@ import {
 } from "./utils/types";
 
 class RevealOnScroll {
-  protected _elements: Element[] = [];
-  protected readonly _queueToShow: Element[] = [];
-  protected _canRevealNext = true;
-  protected _config = DEFAULT_CONFIG;
+  config!: Config;
+  readonly elements: Element[] = [];
+  readonly _queueToShow: Element[] = [];
+  private _canRevealNext = true;
 
   constructor(config?: Config) {
     // If not in browser (SSR), ignore
     if (!IN_BROWSER) return;
 
-    this._elements = getAllElementsToReveal();
+    this.elements = getAllElementsToReveal();
 
     // If intersectionObserver isn't supported (IE), force show all
     if (!HAS_INTERSECTION_OBSERVER) this.revealAllElements();
     else {
-      this._config = Object.assign(config, DEFAULT_CONFIG);
-      const observer = this.createIntersectionObserver();
-      this._elements.forEach((element) => observer.observe(element));
+      this.config = Object.assign(config, DEFAULT_CONFIG);
+      const observer = this._createIntersectionObserver();
+      this.elements.forEach((element) => observer.observe(element));
     }
   }
 
-  protected revealAllElements() {
-    this._elements.forEach((element) => element.classList.add(VISIBLE_CLASS));
+  revealAllElements() {
+    this.elements.forEach((element) => element.classList.add(VISIBLE_CLASS));
   }
 
-  protected createIntersectionObserver() {
+  private _createIntersectionObserver() {
     return new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -49,7 +49,7 @@ class RevealOnScroll {
 
             // Add element to queue + reveal
             this._queueToShow.push(element);
-            this.revealQueued();
+            this._revealQueued();
 
             // Remove observer
             observer.unobserve(entry.target);
@@ -59,14 +59,14 @@ class RevealOnScroll {
     });
   }
 
-  protected isElementPastRevealThreshold(element: Element) {
+  isElementPastRevealThreshold(element: Element) {
     const elementRect = element.getBoundingClientRect();
     const viewHeight = Math.max(
       document.documentElement.clientHeight,
       window.innerHeight
     );
     const threshold =
-      elementRect.height * this._config.thresholdToRevealElements;
+      elementRect.height * this.config.thresholdToRevealElements;
 
     const above = elementRect.bottom - threshold < 0;
     const below = elementRect.top - viewHeight + threshold >= 0;
@@ -74,26 +74,29 @@ class RevealOnScroll {
     return !above && !below;
   }
 
-  protected revealQueued() {
+  private _revealQueued() {
     // If can reveal next and there's items in queue...
     if (this._canRevealNext && this._queueToShow.length) {
       // Prevent another item from revealing till this finishes staggering
       this._canRevealNext = false;
 
-      // Get element to show
-      const element = this._queueToShow[0];
+      // Get oldest element from stack to reveal
+      const element = this._queueToShow.shift() as Element;
 
       // If element is already offscreen, reveal (won't see stagger)
-      if (!this.isElementOnscreen) this.revealElement(element);
-      else {
+      if (!this.isElementOnscreen) {
+        this.revealElement(element);
+        this._revealNextElement();
+      } else {
         setTimeout(() => {
           this.revealElement(element);
-        }, this._config.delayBetweenQueuedElements);
+          this._revealNextElement();
+        }, this.config.delayBetweenQueuedElements);
       }
     }
   }
 
-  protected isElementOnscreen(element: Element) {
+  isElementOnscreen(element: Element) {
     const elementRect = element.getBoundingClientRect();
     const viewHeight = Math.max(
       document.documentElement.clientHeight,
@@ -102,18 +105,14 @@ class RevealOnScroll {
     return !(elementRect.bottom < 0 || elementRect.top - viewHeight >= 0);
   }
 
-  protected revealElement(element: Element) {
+  revealElement(element: Element) {
     const alreadyVisible = element.classList.contains(VISIBLE_CLASS);
-    if (!alreadyVisible) {
-      element.classList.add(VISIBLE_CLASS);
+    if (!alreadyVisible) element.classList.add(VISIBLE_CLASS);
+  }
 
-      // Remove item from queue
-      this._queueToShow.shift();
-    }
-
-    // Show next element
+  private _revealNextElement() {
     this._canRevealNext = true;
-    this.revealQueued();
+    this._revealQueued();
   }
 }
 
