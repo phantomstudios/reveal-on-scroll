@@ -2,7 +2,6 @@ import fs from "fs";
 import path from "path";
 
 import RevealOnScroll from "../src/ts/reveal-on-scroll";
-import { getAllElementsToReveal } from "../src/ts/utils/helpers";
 import { VISIBLE_CLASS } from "../src/ts/utils/types";
 
 const FIXTURE_PATH = "./index.fixture.html";
@@ -10,31 +9,37 @@ const html = fs.readFileSync(path.resolve(__dirname, FIXTURE_PATH), "utf8");
 jest.dontMock("fs");
 
 describe("RevealOnScroll()", function () {
-  // Create fixture
-  beforeEach(() => (document.documentElement.innerHTML = html.toString()));
+  let revealOnScroll: RevealOnScroll;
+
+  beforeEach(() => {
+    document.documentElement.innerHTML = html.toString();
+    revealOnScroll = new RevealOnScroll();
+  });
+
   afterEach(() => jest.resetModules());
 
+  it("Should be able to define new RevealOnScroll()", async () => {
+    expect(revealOnScroll).toBeDefined();
+  });
+
+  it("Elements list should be accessible", async () => {
+    expect(revealOnScroll.elements).toBeDefined();
+  });
+
   it('Each element in reveal array should have "classList" property', async () => {
-    const elements = getAllElementsToReveal();
-    elements.forEach((element) => expect(element.classList).toBeDefined());
+    revealOnScroll.elements.forEach((element) =>
+      expect(element.classList).toBeDefined()
+    );
   });
 
   it('Each element in reveal array should have "getBoundingClientRect" property', async () => {
-    const elements = getAllElementsToReveal();
-    elements.forEach((element) =>
+    revealOnScroll.elements.forEach((element) =>
       expect(element.getBoundingClientRect).toBeDefined()
     );
   });
 
-  it("Should be able to define new RevealOnScroll()", async () => {
-    const revealOnScroll = new RevealOnScroll();
-    expect(revealOnScroll).toBeDefined();
-  });
-
   it("Should reveal all elements if `intersectionObserver` isn't available", async () => {
-    new RevealOnScroll();
-    const elements = getAllElementsToReveal();
-    elements.forEach((element) => {
+    revealOnScroll.elements.forEach((element) => {
       expect(element.classList.contains(VISIBLE_CLASS)).toBe(true);
     });
   });

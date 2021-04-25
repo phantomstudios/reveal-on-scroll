@@ -1,9 +1,9 @@
-import { getAllElementsToReveal } from "./utils/helpers";
 import { IN_BROWSER, HAS_INTERSECTION_OBSERVER } from "./utils/platform";
 import {
   Config,
   DEFAULT_CONFIG,
   HIDDEN_CLASS,
+  REVEAL_CLASS,
   VISIBLE_CLASS,
 } from "./utils/types";
 
@@ -17,7 +17,7 @@ class RevealOnScroll {
     // If not in browser (SSR), ignore
     if (!IN_BROWSER) return;
 
-    this.elements = getAllElementsToReveal();
+    this.elements = this.getAllElementsToReveal();
 
     // If intersectionObserver isn't supported (IE), force show all
     if (!HAS_INTERSECTION_OBSERVER) this.revealAllElements();
@@ -26,6 +26,10 @@ class RevealOnScroll {
       const observer = this._createIntersectionObserver();
       this.elements.forEach((element) => observer.observe(element));
     }
+  }
+
+  getAllElementsToReveal() {
+    return Array.from(document.getElementsByClassName(REVEAL_CLASS));
   }
 
   revealAllElements() {
