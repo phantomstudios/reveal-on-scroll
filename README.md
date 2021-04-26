@@ -94,6 +94,7 @@ Want to get involved, or found an issue? Please contribute using the GitHub Flow
 
 Please read `CONTRIBUTING` for details on our `CODE_OF_CONDUCT`, and the process for submitting pull requests to us!
 
+[npm-image]: https://img.shields.io/npm/v/@phntms/reveal-on-scroll.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/@phntms/reveal-on-scroll
 [npm-downloads-image]: https://img.shields.io/npm/dm/@phntms/reveal-on-scroll.svg
 [npm-downloads-url]: https://npmcharts.com/compare/@phntms/reveal-on-scroll?minimal=true
