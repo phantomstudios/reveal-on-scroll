@@ -80,7 +80,7 @@ class RevealOnScroll {
       if (!element) return;
 
       // If element is already offscreen, reveal (won't see stagger)
-      if (!this.isElementOnscreen) {
+      if (!this.isElementOnscreen(element)) {
         this.revealElement(element);
         this._revealNextElement();
       } else {
