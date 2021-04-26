@@ -2,31 +2,42 @@ import fs from "fs";
 import path from "path";
 
 import RevealOnScroll from "../src/ts/reveal-on-scroll";
-import { getAllElementsToReveal } from "../src/ts/utils/helpers";
 
 const FIXTURE_PATH = "./index.fixture.html";
 const html = fs.readFileSync(path.resolve(__dirname, FIXTURE_PATH), "utf8");
 jest.dontMock("fs");
 
-describe("revealOnScroll()", function () {
-  // Create fixture
-  beforeEach(() => (document.documentElement.innerHTML = html.toString()));
-  afterEach(() => jest.resetModules());
+describe("RevealOnScroll()", function () {
+  let revealOnScroll: RevealOnScroll;
 
-  it('Each element in reveal array should have "classList" property', async () => {
-    const elements = getAllElementsToReveal();
-    elements.forEach((element) => expect(element.classList).toBeDefined());
+  beforeEach(() => {
+    document.documentElement.innerHTML = html.toString();
+    revealOnScroll = new RevealOnScroll();
   });
 
-  it('Each element in reveal array should have "getBoundingClientRect" property', async () => {
-    const elements = getAllElementsToReveal();
-    elements.forEach((element) =>
-      expect(element.getBoundingClientRect).toBeDefined()
+  afterEach(() => jest.resetModules());
+
+  it("Should be defined", async () => {
+    expect(revealOnScroll).toBeDefined();
+  });
+
+  it("Elements list should be accessible", async () => {
+    expect(revealOnScroll.elements).toBeDefined();
+  });
+
+  it("Should have refresh() method", async () => {
+    expect(revealOnScroll.refresh).toBeDefined();
+  });
+
+  it('Each element in reveal array should have "classList" property', async () => {
+    revealOnScroll.elements.forEach((element) =>
+      expect(element.classList).toBeDefined()
     );
   });
 
-  it("Should be defined", function () {
-    const revealOnScroll = new RevealOnScroll();
-    expect(revealOnScroll).toBeDefined();
+  it('Each element in reveal array should have "getBoundingClientRect" property', async () => {
+    revealOnScroll.elements.forEach((element) =>
+      expect(element.getBoundingClientRect).toBeDefined()
+    );
   });
 });

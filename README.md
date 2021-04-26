@@ -84,9 +84,9 @@ If you need `reveal-on-scroll` to work on any browser that doesn't support `inte
 
 Features planned in future releases:
 
-- Optional reset to hide any revealed elements below current window height. For example, if you reveal an element, but then scroll up, automatically hide that element if you scroll up past its reveal threshold.
+- Full test coverage.
+- Optional reset to hide any revealed elements out of viewport view.
 - Optional CSS animation library that can be imported and used alongside TS implementation.
-- A way to listen for DOM changes / re-fetch elements to reveal. Will be needed if dealing with dynamic elements that show after initializing `new RevealOnScroll()`.
 
 ## 🍰 Contributing
 
