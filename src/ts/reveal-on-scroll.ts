@@ -38,49 +38,35 @@ class RevealOnScroll {
   }
 
   private _createIntersectionObserver() {
-    return new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          // Get element
-          const element = entry.target as Element;
+    return new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Get element
+            const element = entry.target as Element;
 
-          const queued = this._queueToShow.includes(element);
-          const alreadyVisible = element.classList.contains(VISIBLE_CLASS);
-          const hidden = element.classList.contains(HIDDEN_CLASS);
+            const queued = this._queueToShow.includes(element);
+            const alreadyVisible = element.classList.contains(VISIBLE_CLASS);
+            const hidden = element.classList.contains(HIDDEN_CLASS);
 
-          if (queued || alreadyVisible || hidden) return;
-          else {
-            if (!this.isElementPastRevealThreshold(element)) return;
+            if (queued || alreadyVisible || hidden) return;
+            else {
+              // Add element to queue + reveal
+              this._queueToShow.push(element);
+              this._revealQueued();
 
-            // Add element to queue + reveal
-            this._queueToShow.push(element);
-            this._revealQueued();
-
-            // Remove observer
-            observer.unobserve(entry.target);
+              // Remove observer
+              observer.unobserve(entry.target);
+            }
           }
-        }
-      });
-    });
+        });
+      },
+      { threshold: this.config.thresholdToRevealElements }
+    );
   }
 
   private _observeElements(elements: Element[]) {
     elements.forEach((element) => this._intersectionObserver.observe(element));
-  }
-
-  isElementPastRevealThreshold(element: Element) {
-    const elementRect = element.getBoundingClientRect();
-    const viewHeight = Math.max(
-      document.documentElement.clientHeight,
-      window.innerHeight
-    );
-    const threshold =
-      elementRect.height * this.config.thresholdToRevealElements;
-
-    const above = elementRect.bottom - threshold < 0;
-    const below = elementRect.top - viewHeight + threshold >= 0;
-
-    return !above && !below;
   }
 
   private _revealQueued() {
