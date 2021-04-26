@@ -23,7 +23,7 @@ class RevealOnScroll {
     // If intersectionObserver isn't supported (IE), force show all
     if (!HAS_INTERSECTION_OBSERVER) this.revealAllElements();
     else {
-      this.config = Object.assign(config, DEFAULT_CONFIG);
+      this.config = Object.assign(DEFAULT_CONFIG, config);
       this._intersectionObserver = this._createIntersectionObserver();
       this._observeElements(this.elements);
     }
