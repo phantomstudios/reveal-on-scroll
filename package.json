@@ -1,7 +1,7 @@
 {
   "name": "@phntms/reveal-on-scroll",
   "description": "Lightweight library to reveal elements on scroll.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "homepage": "https://github.com/phantomstudios/reveal-on-scroll#readme",
