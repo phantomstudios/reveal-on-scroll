@@ -109,5 +109,5 @@ Please read `CONTRIBUTING` for details on our `CODE_OF_CONDUCT`, and the process
 [npm-url]: https://npmjs.org/package/@phntms/reveal-on-scroll
 [npm-downloads-image]: https://img.shields.io/npm/dm/@phntms/reveal-on-scroll.svg
 [npm-downloads-url]: https://npmcharts.com/compare/@phntms/reveal-on-scroll?minimal=true
-[ci-image]: https://github.com/phantomstudios/reveal-on-scroll/workflows/Test/badge.svg
+[ci-image]: https://github.com/phantomstudios/reveal-on-scroll/workflows/test/badge.svg
 [ci-url]: https://github.com/phantomstudios/reveal-on-scroll/actions

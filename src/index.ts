@@ -8,11 +8,11 @@ class RevealOnScroll {
   private _intersectionObserver!: IntersectionObserver;
   private _canRevealNext = true;
 
-  constructor(config?: RevealConfig) {
+  constructor(config?: Partial<RevealConfig>) {
     // If not in browser (SSR), ignore
     if (!IS_BROWSER) return;
 
-    this.config = Object.assign(DEFAULT_REVEAL_CONFIG, config);
+    this.config = { ...DEFAULT_REVEAL_CONFIG, ...config };
     this.elements = this.getAllElementsToReveal();
 
     // If intersectionObserver isn't supported (IE), force show all
