@@ -4,7 +4,7 @@
 [![Actions Status][ci-image]][ci-url]
 [![PR Welcome][npm-downloads-image]][npm-downloads-url]
 
-Lightweight library to reveal elements on scroll as you scroll down or up.
+Lightweight library to reveal elements on scroll.
 
 Can be used standalone as pure TS implementation, or alongside it's full optional CSS animation library (Coming Soon as seen below!).
 
