@@ -1,40 +1,36 @@
-import { IN_BROWSER, HAS_INTERSECTION_OBSERVER } from "./utils/platform";
-import {
-  Config,
-  DEFAULT_CONFIG,
-  HIDDEN_CLASS,
-  REVEAL_CLASS,
-  VISIBLE_CLASS,
-} from "./utils/types";
+import { RevealConfig, DEFAULT_REVEAL_CONFIG } from "./types";
+import { IS_BROWSER, HAS_INTERSECTION_OBSERVER } from "./utils/platform";
 
 class RevealOnScroll {
-  config!: Config;
+  config!: RevealConfig;
   readonly elements: Element[] = [];
   readonly _queueToShow: Element[] = [];
   private _intersectionObserver!: IntersectionObserver;
   private _canRevealNext = true;
 
-  constructor(config?: Config) {
+  constructor(config?: RevealConfig) {
     // If not in browser (SSR), ignore
-    if (!IN_BROWSER) return;
+    if (!IS_BROWSER) return;
 
+    this.config = Object.assign(DEFAULT_REVEAL_CONFIG, config);
     this.elements = this.getAllElementsToReveal();
 
     // If intersectionObserver isn't supported (IE), force show all
     if (!HAS_INTERSECTION_OBSERVER) this.revealAllElements();
     else {
-      this.config = Object.assign(DEFAULT_CONFIG, config);
       this._intersectionObserver = this._createIntersectionObserver();
       this._observeElements(this.elements);
     }
   }
 
   getAllElementsToReveal() {
-    return Array.from(document.getElementsByClassName(REVEAL_CLASS));
+    return Array.from(document.querySelectorAll(this.config.revealSelector));
   }
 
   revealAllElements() {
-    this.elements.forEach((element) => element.classList.add(VISIBLE_CLASS));
+    this.elements.forEach((element) =>
+      element.classList.add(this.config.visibleClass)
+    );
   }
 
   private _createIntersectionObserver() {
@@ -46,8 +42,10 @@ class RevealOnScroll {
             const element = entry.target as Element;
 
             const queued = this._queueToShow.includes(element);
-            const alreadyVisible = element.classList.contains(VISIBLE_CLASS);
-            const hidden = element.classList.contains(HIDDEN_CLASS);
+            const alreadyVisible = element.classList.contains(
+              this.config.visibleClass
+            );
+            const hidden = element.classList.contains(this.config.hiddenClass);
 
             if (queued || alreadyVisible || hidden) return;
             else {
@@ -102,8 +100,8 @@ class RevealOnScroll {
   }
 
   revealElement(element: Element) {
-    const alreadyVisible = element.classList.contains(VISIBLE_CLASS);
-    if (!alreadyVisible) element.classList.add(VISIBLE_CLASS);
+    const alreadyVisible = element.classList.contains(this.config.visibleClass);
+    if (!alreadyVisible) element.classList.add(this.config.visibleClass);
   }
 
   private _revealNextElement() {
@@ -120,3 +118,4 @@ class RevealOnScroll {
 }
 
 export default RevealOnScroll;
+export { RevealConfig, DEFAULT_REVEAL_CONFIG } from "./types";
