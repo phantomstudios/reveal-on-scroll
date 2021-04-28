@@ -1,5 +1,5 @@
 import { RevealConfig, DEFAULT_REVEAL_CONFIG } from "./types";
-import { IN_BROWSER, HAS_INTERSECTION_OBSERVER } from "./utils/platform";
+import { IS_BROWSER, HAS_INTERSECTION_OBSERVER } from "./utils/platform";
 
 class RevealOnScroll {
   config!: RevealConfig;
@@ -10,7 +10,7 @@ class RevealOnScroll {
 
   constructor(config?: RevealConfig) {
     // If not in browser (SSR), ignore
-    if (!IN_BROWSER) return;
+    if (!IS_BROWSER) return;
 
     this.config = Object.assign(DEFAULT_REVEAL_CONFIG, config);
     this.elements = this.getAllElementsToReveal();
