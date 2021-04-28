@@ -118,5 +118,4 @@ class RevealOnScroll {
 }
 
 export default RevealOnScroll;
-
 export { RevealConfig } from "./types";
