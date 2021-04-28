@@ -1,13 +1,15 @@
-export const REVEAL_CLASS = "reveal-on-scroll";
-export const VISIBLE_CLASS = "reveal-scrolled";
-export const HIDDEN_CLASS = "reveal-hidden";
-
-export interface Config {
+export interface RevealConfig {
   delayBetweenQueuedElements: number;
   thresholdToRevealElements: number;
+  revealSelector: string;
+  visibleClass: string;
+  hiddenClass: string;
 }
 
-export const DEFAULT_CONFIG: Config = {
+export const DEFAULT_REVEAL_CONFIG: RevealConfig = {
   delayBetweenQueuedElements: 150,
   thresholdToRevealElements: 0.2,
+  revealSelector: ".reveal-on-scroll",
+  visibleClass: "reveal-scrolled",
+  hiddenClass: "reveal-hidden",
 };

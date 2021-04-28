@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-import { RevealOnScroll } from "../src";
+import RevealOnScroll from "../src";
 
 const FIXTURE_PATH = "./index.fixture.html";
 const html = fs.readFileSync(path.resolve(__dirname, FIXTURE_PATH), "utf8");

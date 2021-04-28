@@ -40,6 +40,15 @@ new RevealOnScroll({
 
   // Threshold of element that has to be in view, before revealing element
   thresholdToRevealElements: 0.2,
+
+  // Used to querySelectAll with the following
+  revealSelector: ".reveal-on-scroll",
+
+  // Class added to element when revealed
+  visibleClass: "reveal-scrolled",
+
+  // If used alongside revealSelector, ignores reveal events till removed
+  hiddenClass: "reveal-hidden",
 });
 ```
 
