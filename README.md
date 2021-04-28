@@ -23,7 +23,7 @@ npm i @phntms/reveal-on-scroll
 To use, initialize a new `RevealOnScroll()` component.
 
 ```ts
-import { RevealOnScroll } from "@pnhtms/reveal-on-scroll";
+import RevealOnScroll from "@pnhtms/reveal-on-scroll";
 
 new RevealOnScroll();
 
