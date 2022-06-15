@@ -2,9 +2,9 @@ import { RevealConfig, DEFAULT_REVEAL_CONFIG } from "./types";
 import { IS_BROWSER, HAS_INTERSECTION_OBSERVER } from "./utils/platform";
 
 class RevealOnScroll {
-  config!: RevealConfig;
-  readonly elements: Element[] = [];
-  readonly _queueToShow: Element[] = [];
+  private _config!: RevealConfig;
+  public readonly elements: Element[] = [];
+  private readonly _queueToShow: Element[] = [];
   private _intersectionObserver!: IntersectionObserver;
   private _canRevealNext = true;
 
@@ -12,7 +12,7 @@ class RevealOnScroll {
     // If not in browser (SSR), ignore
     if (!IS_BROWSER) return;
 
-    this.config = { ...DEFAULT_REVEAL_CONFIG, ...config };
+    this._config = { ...DEFAULT_REVEAL_CONFIG, ...config };
     this.elements = this.getAllElementsToReveal();
 
     // If intersectionObserver isn't supported (IE), force show all
@@ -24,28 +24,29 @@ class RevealOnScroll {
   }
 
   getAllElementsToReveal() {
-    return Array.from(document.querySelectorAll(this.config.revealSelector));
+    return Array.from(document.querySelectorAll(this._config.revealSelector));
   }
 
   revealAllElements() {
     this.elements.forEach((element) =>
-      element.classList.add(this.config.visibleClass)
+      element.classList.add(this._config.visibleClass)
     );
   }
 
   private _createIntersectionObserver() {
     return new IntersectionObserver(
       (entries, observer) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+        entries
+          .filter((entry) => entry.isIntersecting)
+          .forEach((entry) => {
             // Get element
             const element = entry.target as Element;
 
             const queued = this._queueToShow.includes(element);
             const alreadyVisible = element.classList.contains(
-              this.config.visibleClass
+              this._config.visibleClass
             );
-            const hidden = element.classList.contains(this.config.hiddenClass);
+            const hidden = element.classList.contains(this._config.hiddenClass);
 
             if (queued || alreadyVisible || hidden) return;
             else {
@@ -56,10 +57,9 @@ class RevealOnScroll {
               // Remove observer
               observer.unobserve(entry.target);
             }
-          }
-        });
+          });
       },
-      { threshold: this.config.thresholdToRevealElements }
+      { threshold: this._config.thresholdToRevealElements }
     );
   }
 
@@ -85,7 +85,7 @@ class RevealOnScroll {
         setTimeout(() => {
           this.revealElement(element);
           this._revealNextElement();
-        }, this.config.delayBetweenQueuedElements);
+        }, this._config.delayBetweenQueuedElements);
       }
     }
   }
@@ -100,8 +100,10 @@ class RevealOnScroll {
   }
 
   revealElement(element: Element) {
-    const alreadyVisible = element.classList.contains(this.config.visibleClass);
-    if (!alreadyVisible) element.classList.add(this.config.visibleClass);
+    const alreadyVisible = element.classList.contains(
+      this._config.visibleClass
+    );
+    if (!alreadyVisible) element.classList.add(this._config.visibleClass);
   }
 
   private _revealNextElement() {
