@@ -4,9 +4,7 @@
 [![Actions Status][ci-image]][ci-url]
 [![PR Welcome][npm-downloads-image]][npm-downloads-url]
 
-Lightweight library to reveal elements on scroll as you scroll down or up.
-
-Can be used standalone as pure TS implementation, or alongside it's full optional CSS animation library (Coming Soon as seen below!).
+Lightweight library to reveal elements on scroll.
 
 Also SSR safe and won't break build if pre-rendered.
 
@@ -23,7 +21,7 @@ npm i @phntms/reveal-on-scroll
 To use, initialize a new `RevealOnScroll()` component.
 
 ```ts
-import RevealOnScroll from "@pnhtms/reveal-on-scroll";
+import RevealOnScroll from "@phntms/reveal-on-scroll";
 
 new RevealOnScroll();
 
@@ -71,12 +69,11 @@ The library works by adding `reveal-scrolled` to any `reveal-on-scroll` elements
 To animate, simply hook into this with any custom CSS, for example:
 
 ```scss
-$ease-out: cubic-bezier(0.3, 1, 0.7, 1);
-
 .reveal-on-scroll {
   opacity: 0;
   transform: translateY(32px);
-  transition: opacity 0.8s $ease-out, transform 0.6s $ease-out;
+  transition: opacity 0.8s, transform 0.6s;
+  transition-timing-function: cubic-bezier(0.3, 1, 0.7, 1);
 
   &.reveal-scrolled {
     opacity: 1;
@@ -90,14 +87,6 @@ $ease-out: cubic-bezier(0.3, 1, 0.7, 1);
 This library utilizes `intersectionObserver`, as such browser support is pretty good (par IE11 and below), for more information check [caniuse](https://caniuse.com/intersectionobserver). For fallback, `reveal-scrolled` is automatically added to all `reveal-on-scroll` elements to ensure older browsers still reveal content.
 
 If you need `reveal-on-scroll` to work on any browser that doesn't support `intersectionObserver` consider using a polyfill such as - [intersection-observer](https://www.npmjs.com/package/intersection-observer).
-
-### Planned
-
-Features planned in future releases:
-
-- Full test coverage.
-- Optional reset to hide any revealed elements out of viewport view.
-- Optional CSS animation library that can be imported and used alongside TS implementation.
 
 ## 🍰 Contributing
 
