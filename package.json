@@ -34,7 +34,7 @@
     "fix:format": "prettier \"**/*.{md,html,yaml,yml}\" --write",
     "depcheck": "npx npm-check --update"
   },
-  "author": "Paulo Ferreira Jorge (paulo.jorge@phntms.com)",
+  "author": "Josua Pedersen (josua@phantom.agency)",
   "license": "MIT",
   "devDependencies": {
     "@babel/preset-env": "^7.4.5",
