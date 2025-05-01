@@ -72,7 +72,9 @@ To animate, simply hook into this with any custom CSS, for example:
 .reveal-on-scroll {
   opacity: 0;
   transform: translateY(32px);
-  transition: opacity 0.8s, transform 0.6s;
+  transition:
+    opacity 0.8s,
+    transform 0.6s;
   transition-timing-function: cubic-bezier(0.3, 1, 0.7, 1);
 
   &.reveal-scrolled {
