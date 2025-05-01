@@ -120,4 +120,4 @@ class RevealOnScroll {
 }
 
 export default RevealOnScroll;
-export { RevealConfig, DEFAULT_REVEAL_CONFIG } from "./types";
+export type { RevealConfig, DEFAULT_REVEAL_CONFIG };
