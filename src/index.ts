@@ -29,7 +29,7 @@ class RevealOnScroll {
 
   revealAllElements() {
     this.elements.forEach((element) =>
-      element.classList.add(this._config.visibleClass)
+      element.classList.add(this._config.visibleClass),
     );
   }
 
@@ -44,7 +44,7 @@ class RevealOnScroll {
 
             const queued = this._queueToShow.includes(element);
             const alreadyVisible = element.classList.contains(
-              this._config.visibleClass
+              this._config.visibleClass,
             );
             const hidden = element.classList.contains(this._config.hiddenClass);
 
@@ -59,7 +59,7 @@ class RevealOnScroll {
             }
           });
       },
-      { threshold: this._config.thresholdToRevealElements }
+      { threshold: this._config.thresholdToRevealElements },
     );
   }
 
@@ -94,14 +94,14 @@ class RevealOnScroll {
     const elementRect = element.getBoundingClientRect();
     const viewHeight = Math.max(
       document.documentElement.clientHeight,
-      window.innerHeight
+      window.innerHeight,
     );
     return !(elementRect.bottom < 0 || elementRect.top - viewHeight >= 0);
   }
 
   revealElement(element: Element) {
     const alreadyVisible = element.classList.contains(
-      this._config.visibleClass
+      this._config.visibleClass,
     );
     if (!alreadyVisible) element.classList.add(this._config.visibleClass);
   }
