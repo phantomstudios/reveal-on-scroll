@@ -13,7 +13,7 @@ Also SSR safe and won't break build if pre-rendered.
 Install this package with `npm`.
 
 ```bash
-npm i @phntms/reveal-on-scroll
+npm i @phantomstudios/reveal-on-scroll
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ npm i @phntms/reveal-on-scroll
 To use, initialize a new `RevealOnScroll()` component.
 
 ```ts
-import RevealOnScroll from "@phntms/reveal-on-scroll";
+import RevealOnScroll from "@phantomstudios/reveal-on-scroll";
 
 new RevealOnScroll();
 
@@ -96,9 +96,9 @@ Want to get involved, or found an issue? Please contribute using the GitHub Flow
 
 Please read `CONTRIBUTING` for details on our `CODE_OF_CONDUCT`, and the process for submitting pull requests to us!
 
-[npm-image]: https://img.shields.io/npm/v/@phntms/reveal-on-scroll.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/@phntms/reveal-on-scroll
-[npm-downloads-image]: https://img.shields.io/npm/dm/@phntms/reveal-on-scroll.svg
-[npm-downloads-url]: https://npmcharts.com/compare/@phntms/reveal-on-scroll?minimal=true
+[npm-image]: https://img.shields.io/npm/v/@phantomstudios/reveal-on-scroll.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/@phantomstudios/reveal-on-scroll
+[npm-downloads-image]: https://img.shields.io/npm/dm/@phantomstudios/reveal-on-scroll.svg
+[npm-downloads-url]: https://npmcharts.com/compare/@phantomstudios/reveal-on-scroll?minimal=true
 [ci-image]: https://github.com/phantomstudios/reveal-on-scroll/workflows/test/badge.svg
 [ci-url]: https://github.com/phantomstudios/reveal-on-scroll/actions
