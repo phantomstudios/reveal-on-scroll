@@ -1,5 +1,5 @@
 {
-  "name": "@hantomstudios/reveal-on-scroll",
+  "name": "@phantomstudios/reveal-on-scroll",
   "description": "Lightweight library to reveal elements on scroll.",
   "version": "0.1.4",
   "main": "lib/index.js",
