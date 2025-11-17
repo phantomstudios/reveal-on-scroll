@@ -58,8 +58,5 @@
     "prettier": "^3.5.3",
     "ts-jest": "^29.3.2",
     "typescript": "^5.8.3"
-  },
-  "dependencies": {
-    "@phantomstudios/reveal-on-scroll": "^0.1.4"
   }
 }
