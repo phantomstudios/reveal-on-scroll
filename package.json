@@ -37,7 +37,7 @@
   "author": "Josua Pedersen (josua@phantom.agency)",
   "license": "MIT",
   "devDependencies": {
-    "@babel/eslint-parser": "^7.27.1",
+    "@babel/eslint-parser": "^8.0.1",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-typescript": "^7.3.3",
     "@eslint/compat": "^2.0.0",
